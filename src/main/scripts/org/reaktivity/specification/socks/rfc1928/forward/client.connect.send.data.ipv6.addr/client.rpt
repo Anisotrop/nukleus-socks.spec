@@ -42,9 +42,14 @@ write [0x1F 0x90] # The destination port
 read [0x05] # version: SOCKS v5
 read [0x00] # Succeeded
 read [0x00] # RSV field
-read [0x04] # Address Type domain name
-read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x01] # The Bound Server Address
-read [0xEA 0xDB]           					   # The Bound Server Port
+
+read [0x01] # Address Type domain name
+read [0x7F 0x00 0x00 0x01] # The Bound Server Address
+read [0xEA 0xDB]           # The Bound Server Port
+
+#read [0x04] # Address Type domain name
+#read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x01] # The Bound Server Address
+#read [0xEA 0xDB]           					   # The Bound Server Port
 
 ## Application data
 write "hello world"
