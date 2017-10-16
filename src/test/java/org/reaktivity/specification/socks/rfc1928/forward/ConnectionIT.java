@@ -49,6 +49,17 @@ public class ConnectionIT
 
     @Test
     @Specification({
+        "${scripts}/client.connect.send.data.ipv6.addr/client",
+        "${scripts}/client.connect.send.data.ipv6.addr/server"})
+    public void shouldEstablishConnectionIPv6() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/client.does.not.connect.no.acceptable.methods/client",
         "${scripts}/client.does.not.connect.no.acceptable.methods/server"})
     public void shouldNotEstablishConnectionNoAcceptableMethods() throws Exception
@@ -74,6 +85,17 @@ public class ConnectionIT
         "${scripts}/client.connect.request.with.command.not.supported/client",
         "${scripts}/client.connect.request.with.command.not.supported/server"})
     public void shouldNotEstablishConnectionCommandNotSupported() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/client.connect.request.with.addr.type.not.supported/client",
+        "${scripts}/client.connect.request.with.addr.type.not.supported/server"})
+    public void shouldNotEstablishConnectionAddrTypeNotSupported() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");

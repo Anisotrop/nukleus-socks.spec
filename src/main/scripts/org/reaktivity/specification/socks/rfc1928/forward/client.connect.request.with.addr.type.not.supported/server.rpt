@@ -27,12 +27,28 @@ accept ${serverAccept}
 accepted
 connected
 
-## Read the request bytes for connecting, authentication required
-read [0x05]
-read [0x02]
-read [0x01 0x02] # GSSAPI and username&password
+## Read the request bytes for connecting with no-authentication
+read [0x05 0x01 0x00]
 
-## Write the response, but no acceptable methods for authentication
-write [0x05 0xFF]
+## Write the response, expect success
+write [0x05 0x00]
 
-read closed
+## Read CONNECT request
+read [0x05] # version: SOCKS v5
+read [0x01] # CONNECT command
+read [0x00] # RSV field
+read [0x02] # Address Type domain name which does not exist
+read [0x0B] # Length of the FQDN
+read "example.com" # The FQDN
+read [0x1F 0x90]   # The destination port
+
+
+## Write CONNECT response
+write [0x05] # version: SOCKS v5
+write [0x08] # Address type not supported
+write [0x00] # RSV field
+
+write [0x01] # Address Type domain name
+write [0x00 0x00 0x00 0x00] # The Bound Server Address
+write [0x00 0x00]           # The Bound Server Port
+

@@ -27,12 +27,33 @@ accept ${serverAccept}
 accepted
 connected
 
-## Read the request bytes for connecting, authentication required
-read [0x05]
-read [0x02]
-read [0x01 0x02] # GSSAPI and username&password
+## Read the request bytes for connecting with no-authentication
+read [0x05 0x01 0x00]
 
-## Write the response, but no acceptable methods for authentication
-write [0x05 0xFF]
+## Write the response, expect success
+write [0x05 0x00]
 
-read closed
+## Read CONNECT request
+read [0x05] # version: SOCKS v5
+read [0x01] # CONNECT command
+read [0x00] # RSV field
+read [0x04] # Address Type domain name
+read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x01] # IPv6 addr 
+read [0x1F 0x90]   # The destination port
+
+## Write CONNECT response
+write [0x05] # version: SOCKS v5
+write [0x00] # Succeeded
+write [0x00] # RSV field
+write [0x04] # Address Type domain name
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x01] # The Bound Server Address
+write [0xEA 0xDB]                               # The Bound Server Port
+
+## Application data
+read "hello world"
+write "hello client"
+
+## Application data
+read "data flows as intended"
+write "data flows back as intended"
+
