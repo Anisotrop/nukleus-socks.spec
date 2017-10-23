@@ -18,6 +18,7 @@ package org.reaktivity.specification.nukleus.socks.stream.forward;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
@@ -50,6 +51,7 @@ public class ConnectionIT
     }
 
     @Test
+    @Ignore
     @ScriptProperty("serverAccept \"nukleus://socks/streams/source\"")
     @Specification({
         "${scripts}/client.connect.send.data.ipv6.addr/client",
@@ -103,6 +105,30 @@ public class ConnectionIT
         "${scripts}/client.connect.request.with.addr.type.not.supported/client",
         "${scripts}/client.connect.request.with.addr.type.not.supported/server"})
     public void shouldNotEstablishConnectionAddrTypeNotSupported() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverAccept \"nukleus://socks/streams/source\"")
+    @Specification({
+        "${scripts}/client.connect.request.general.failure/client",
+        "${scripts}/client.connect.request.general.failure/server"})
+    public void shouldNotEstablishConnectionGeneralFailure() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverAccept \"nukleus://socks/streams/source\"")
+    @Specification({
+        "${scripts}/client.sends.request.with.socks.version.6/client",
+        "${scripts}/client.sends.request.with.socks.version.6/server"})
+    public void shouldEstablishConnectionSocksVersion4() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
