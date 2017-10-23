@@ -62,6 +62,28 @@ public class ConnectionIT
 
     @Test
     @Specification({
+        "${scripts}/client.connect.send.data.throttling.server.smaller/client",
+        "${scripts}/client.connect.send.data.throttling.server.smaller/server"})
+    public void shouldEstablishConnectionWithThrottlingServerSmaller() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/client.connect.send.data.throttling.client.smaller/client",
+        "${scripts}/client.connect.send.data.throttling.client.smaller/server"})
+    public void shouldEstablishConnectionWithThrottlingClientSmaller() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/client.does.not.connect.no.acceptable.methods/client",
         "${scripts}/client.does.not.connect.no.acceptable.methods/server"})
     public void shouldNotEstablishConnectionNoAcceptableMethods() throws Exception

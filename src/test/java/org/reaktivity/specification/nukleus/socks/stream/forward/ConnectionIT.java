@@ -66,6 +66,30 @@ public class ConnectionIT
     @Test
     @ScriptProperty("serverAccept \"nukleus://socks/streams/source\"")
     @Specification({
+        "${scripts}/client.connect.send.data.throttling.server.smaller/client",
+        "${scripts}/client.connect.send.data.throttling.server.smaller/server"})
+    public void shouldEstablishConnectionWithThrottlingServerSmaller() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverAccept \"nukleus://socks/streams/source\"")
+    @Specification({
+        "${scripts}/client.connect.send.data.throttling.client.smaller/client",
+        "${scripts}/client.connect.send.data.throttling.client.smaller/server"})
+    public void shouldEstablishConnectionWithThrottlingClientSmaller() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverAccept \"nukleus://socks/streams/source\"")
+    @Specification({
         "${scripts}/client.does.not.connect.no.acceptable.methods/client",
         "${scripts}/client.does.not.connect.no.acceptable.methods/server"})
     public void shouldNotEstablishConnectionNoAcceptableMethods() throws Exception

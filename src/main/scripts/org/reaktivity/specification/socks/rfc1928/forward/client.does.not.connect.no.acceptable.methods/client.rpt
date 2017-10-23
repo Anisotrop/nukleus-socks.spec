@@ -22,10 +22,10 @@ connect await ROUTED_SERVER "nukleus://socks/streams/source"
   option nukleus:transmission "duplex"
 connected
 
-## Write the request bytes for connecting, authentication required
+## Write the request bytes for connecting, no authentication required
 write [0x05]
-write [0x02]
-write [0x01 0x02] # GSSAPI and username&password
+write [0x01]
+write [0x01] # GSSAPI, not yet supported
 
 ## Read the response, but no acceptable methods for authentication
 read [0x05 0xFF]
